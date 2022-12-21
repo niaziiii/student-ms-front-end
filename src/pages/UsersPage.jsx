@@ -1,27 +1,43 @@
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getItems } from '../helper'
 import { GrUpdate, GrContactInfo } from 'react-icons/gr'
 import { Link } from 'react-router-dom'
+import { ComponentLoader } from '../components'
+import { Button } from '@mui/material'
 
 const UsersPage = () => {
-
+  const [loading, setLoading] = useState(false)
   const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const getUsers = async () => {
-      const items = await getItems('http://localhost:4000/api/users')
-      setUsers(items.data);
+      try {
+        setLoading(true)
+        const items = await getItems('https://student-m-s.vercel.app/api/users');
+        setUsers(items.data);
+      } catch (error) {
+        setLoading(false)
+        setError(true)
+      }
+      finally {
+        setLoading(false)
+      }
     }
 
-    // getUsers();
+    getUsers();
   }, [])
+
+
+  if (error) return <p>An error occurred: Kindly reload</p>;
   return (
-    <div className='bg-white'>
+    <div className='bg-white relative min-h-full'>
+      {loading&& <ComponentLoader/>}
       <div>
         <div className='flex items-center gap-2 p-4'>
-          <Link to='/users/add'><button className='bg-black p-2 text-white'>Add User</button></Link>
-          <Link to=''><button className='bg-black text-white p-2'>Black Listed</button></Link>
+
+                
+          <Link to='/users/add'><Button variant="contained" className='block bg-custom-blue' endIcon='👤'>Add User</Button></Link>
         </div>
 
         <div className="overflow-x-auto relative">
@@ -43,49 +59,7 @@ const UsersPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  ALi hassan
-                </th>
-                <td className="py-4 px-6">
-                  12345678@gmail.com
-                </td>
-                <td className="py-4 px-6  bg-blue-300">
-                  <Link className='flex items-center gap-2'>Updates <GrUpdate /></Link>
-                </td>
-                <td className="py-4 px-6 bg-red-300">
-                  <Link className='flex items-center gap-2'>Info <GrContactInfo /></Link>
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  ALi hassan
-                </th>
-                <td className="py-4 px-6">
-                  12345678@gmail.com
-                </td>
-                <td className="py-4 px-6  bg-blue-300">
-                  <Link className='flex items-center gap-2'>Updates <GrUpdate /></Link>
-                </td>
-                <td className="py-4 px-6 bg-red-300">
-                  <Link className='flex items-center gap-2'>Info <GrContactInfo /></Link>
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  ALi hassan
-                </th>
-                <td className="py-4 px-6">
-                  12345678@gmail.com
-                </td>
-                <td className="py-4 px-6  bg-blue-300">
-                  <Link className='flex items-center gap-2'>Updates <GrUpdate /></Link>
-                </td>
-                <td className="py-4 px-6 bg-red-300">
-                  <Link className='flex items-center gap-2'>Info <GrContactInfo /></Link>
-                </td>
-              </tr>
-              {/* {
+              {
                 users.map((el, i) => {
                   return (
                     <tr key={i} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -96,15 +70,15 @@ const UsersPage = () => {
                         {el.email}
                       </td>
                       <td className="py-4 px-6  bg-blue-300">
-                      <Link className='flex items-center gap-2'>Updates <GrUpdate/></Link>
+                        <Link className='flex items-center gap-2'>Updates <GrUpdate /></Link>
                       </td>
                       <td className="py-4 px-6 bg-red-300">
-                        <Link className='flex items-center gap-2'>Info <GrContactInfo/></Link>
+                        <Link className='flex items-center gap-2'>Info <GrContactInfo /></Link>
                       </td>
                     </tr>
                   )
                 })
-              } */}
+              }
 
             </tbody>
           </table>
