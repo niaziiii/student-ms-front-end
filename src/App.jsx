@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     async function load() {
-      await loggedInChecker(setUser,setLoading)
+      await loggedInChecker(setUser, setLoading)
     }
     load()
   }, [])
@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="App bg-custom-black">
-      <HeaderNavigation />
+      <HeaderNavigation user={user} setUser={setUser} />
       <div className="content flex min-h-screen ">
         <div className='navigation bg-custom-grey '>
           <Navigation role={user} />
@@ -68,7 +68,7 @@ function App() {
             {/* user/student Routes */}
             <Route path="test">
               <Route index element={<AuthUser><TestPage /></AuthUser>} />
-              <Route path=":testId" element={<GetTest />} />
+              <Route path=":testId" element={<AuthUser><GetTest /></AuthUser>} />
             </Route>
 
 

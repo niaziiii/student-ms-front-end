@@ -35,17 +35,18 @@ const loggedInChecker = async (setUser, setLoading) => {
   if (!jwt) setLoading(false)
 
   try {
-    const user = await postItems(`https://student-m-s.vercel.app/api/auth/islogged`, { jwt:jwt });
+    const user = await postItems(`https://student-m-s.vercel.app/api/auth/islogged`, { jwt: jwt });
     if (user.data.status === "success") {
       setLoading(false);
       setUser(user.data.data.user)
     } else {
-        cookies.remove('jwt')
+      setLoading(false);
+      return cookies.remove('jwt')
     }
     return user.data
   } catch (error) {
-    cookies.remove('jwt')
-    return
+    setLoading(false);
+    return cookies.remove('jwt')
   }
 }
 export {
