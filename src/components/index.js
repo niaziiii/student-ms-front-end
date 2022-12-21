@@ -15,12 +15,15 @@ import HeaderNavigation from "./HeaderNavigation";
 import Navigation from "./Navigation";
 import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
+import ComponentLoader from "./ComponentLoader";
+
 
 export {
     Navigation,
     HeaderNavigation,
     Loader,
     ErrorMessage,
+    ComponentLoader,
 
     AddUser,
     GetUser,
