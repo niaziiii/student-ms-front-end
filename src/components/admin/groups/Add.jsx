@@ -31,6 +31,7 @@ const AddQuestion = () => {
     validationSchema: yup.object(validationObjectQuiz),
     onSubmit: (values, { resetForm }) => {
       if (!questionGroup) return;
+      setLoading(true)
       const obj = formitQuestion(values, questionGroup)
 
       async function addQuestion() {
