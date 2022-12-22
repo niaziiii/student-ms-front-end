@@ -8,13 +8,18 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-
-
+import { Navigate, useLocation } from 'react-router';
+import axios from 'axios';
+import ComponentLoader from '../../ComponentLoader';
 
 
 const AddQuestion = () => {
-  const [questions, setQuestions] = useState([]);
+  const { state } = useLocation()
+  if (!state?.groups) return <Navigate to='/group' />
+  const groups = state.groups;
+
+  // const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(null);
   const [questionGroup, setQuestionGroup] = useState('');
 
 
@@ -25,13 +30,24 @@ const AddQuestion = () => {
 
     validationSchema: yup.object(validationObjectQuiz),
     onSubmit: (values, { resetForm }) => {
-      const obj = formitQuestion(values)
-      setQuestions(prev => {
-        const newQuestions = [...prev];
-        newQuestions.push(obj)
-        return newQuestions
-      })
-      resetForm();
+      if (!questionGroup) return;
+      const obj = formitQuestion(values, questionGroup)
+
+      async function addQuestion() {
+        try {
+          await axios.post('https://student-m-s.vercel.app/api/question', obj);
+          setQuestionGroup('');
+          resetForm();
+          setLoading(false)
+
+        } catch (error) {
+          setLoading(false)
+        } finally {
+          setLoading(false)
+        }
+      }
+      addQuestion()
+
     }
   })
 
@@ -39,9 +55,9 @@ const AddQuestion = () => {
   const action = formIK.props.value;
 
   return (
-    <div className='bg-white p-2'>
+    <div className='bg-white p-2 relative'>
+      {loading && <ComponentLoader />}
       <h1 className=' text-4xl font-bold text-center mt-4 mb-6'>Add Group Question</h1>
-
       <form action="#" className='p-4' onSubmit={(e) => {
         e.preventDefault()
         action.handleSubmit()
@@ -111,7 +127,7 @@ const AddQuestion = () => {
               required
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Age"
+              label="correct"
               name='correct'
               onChange={action.handleChange}
               onBlur={action.handleBlur}
@@ -132,18 +148,18 @@ const AddQuestion = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={questionGroup}
-              label="Age"
+              label="group"
               onChange={(e) => setQuestionGroup(e.target.value)}
             >
-              <MenuItem value={10}>A</MenuItem>
-              <MenuItem value={20}>B</MenuItem>
-              <MenuItem value={30}>C</MenuItem>
+              {
+                groups.map(el => <MenuItem key={el.id} value={el.id}>{el.groupName}</MenuItem>)
+              }
             </Select>
           </FormControl>
 
         </div>
         <div className='block w-full mt-8'>
-          <Button variant="contained" className='block w-full' endIcon='✔' type='submit' > Add Quiz</Button>
+          <Button variant="contained" className='block w-full bg-custom-blue' endIcon='✔' type='submit' > Add Quiz</Button>
         </div>
 
       </form>

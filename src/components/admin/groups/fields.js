@@ -26,11 +26,12 @@ const validationObjectQuiz = {
 }
 
 
-const formitQuestion = (q) => {
+const formitQuestion = (q,group) => {
     return ({
         title: q.title,
         correct: q.correct,
-        options: [q.optionA, q.optionB, q.optionC, q.optionD]
+        options: [q.optionA, q.optionB, q.optionC, q.optionD],
+        group: group
     })
 }
 

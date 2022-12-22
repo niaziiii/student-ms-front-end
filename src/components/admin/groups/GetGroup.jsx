@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ComponentLoader from '../../ComponentLoader';
 
 function GetGroup() {
   const { groupId } = useParams();
@@ -11,9 +12,8 @@ function GetGroup() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('/groups.json');
-        const data = response.data.data.find(el => el.id === groupId)
-        setData(data);
+        const response = await axios.get(`https://student-m-s.vercel.app/api/group/${groupId}`);
+        setData(response.data.alldata);
       } catch (error) {
         setError(error);
       } finally {
@@ -24,7 +24,7 @@ function GetGroup() {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <div className='bg-white p-4 h-full relative'><ComponentLoader /></div>;
   }
 
   if (error) {
@@ -32,9 +32,9 @@ function GetGroup() {
   }
 
   return (
-    <div className='bg-white p-4'>
+    <div className='bg-white p-4 h-full relative'>
       <div className='flex items-center justify-between shadow-box-main p-4 rounded'>
-        <h1 className=' text-3xl font-bold'>Group {data.group}</h1>
+        <h1 className=' text-3xl font-bold'>Group {data.groupName}</h1>
         <p>Id : {data.id}</p>
       </div>
       <div className='shadow-box-main p-4 rounded mt-6 block'>
