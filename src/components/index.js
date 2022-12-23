@@ -8,7 +8,7 @@ import AddBookAdmin from "./admin/books/AddBookAdmin";
 
 import TestPage from "./student/GroupPage";
 import GetTest from "./student/GetTest";
-
+import StatTableUser from "./student/StatTableUser";
 
 
 import HeaderNavigation from "./HeaderNavigation";
@@ -16,6 +16,9 @@ import Navigation from "./Navigation";
 import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
 import ComponentLoader from "./ComponentLoader";
+
+import UserHomePage from "./student/UserHomePage";
+import AdminHomePage from "./admin/AdminHomePage";
 
 export {
     Navigation,
@@ -32,5 +35,8 @@ export {
     AddBookAdmin,
 
     TestPage,
-    GetTest
+    GetTest,
+
+    AdminHomePage,
+    UserHomePage,
 }

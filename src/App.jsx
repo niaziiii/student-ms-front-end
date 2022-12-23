@@ -34,7 +34,6 @@ function App() {
     return user.role === 'user' ? prop.children : <Navigate to={'/'} />
   }
 
-
   return (
     <div className="App bg-custom-black">
       <HeaderNavigation user={user} setUser={setUser} />
@@ -45,7 +44,7 @@ function App() {
 
         <div className='p-2 py-4 w-full'>
           <Routes>
-            <Route path="/" element={<HomePage />}> </Route>
+            <Route path="/" element={<HomePage user={user} />}> </Route>
 
             {/* admin Routes */}
             <Route path="users">
@@ -64,15 +63,13 @@ function App() {
               <Route path=":groupId" element={<AuthAdmin><GetGroup /></AuthAdmin>} />
             </Route>
 
+            
 
             {/* user/student Routes */}
             <Route path="test">
               <Route index element={<AuthUser><TestPage /></AuthUser>} />
-              <Route path=":testId" element={<AuthUser><GetTest /></AuthUser>} />
+              <Route path=":testId" element={<AuthUser><GetTest id={user._id} /></AuthUser>} />
             </Route>
-
-
-
 
             {/*Error Handling Router  */}
             <Route path="*" element={<ErrorPage />}> </Route>
