@@ -61,6 +61,7 @@ const UsersPage = () => {
             <tbody>
               {
                 users.map((el, i) => {
+                  if(el.role === 'admin') return;
                   return (
                     <tr key={i} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -73,7 +74,7 @@ const UsersPage = () => {
                         <Link className='flex items-center gap-2'>Updates <GrUpdate /></Link>
                       </td>
                       <td className="py-4 px-6 bg-red-300">
-                        <Link className='flex items-center gap-2'>Info <GrContactInfo /></Link>
+                        <Link className='flex items-center gap-2' to={`/users/${el._id}`}>Info <GrContactInfo /></Link>
                       </td>
                     </tr>
                   )

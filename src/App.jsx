@@ -42,7 +42,7 @@ function App() {
           <Navigation role={user} />
         </div>
 
-        <div className='p-2 py-4 w-full'>
+        <div className='p-2 py-2 w-full'>
           <Routes>
             <Route path="/" element={<HomePage user={user} />}> </Route>
 
